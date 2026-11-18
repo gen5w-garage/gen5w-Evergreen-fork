@@ -51,7 +51,7 @@ run() { FW_PASSES=$1 "$SH" "$T/fw.sh" > "$T/out" 2>&1; }
 stock; run 1
 ok "whitelist car: jump first in INPUT (IPv4, hotspot addresses only)" 'grep "^INPUT " "$T/v4" | head -1 | grep -qx "INPUT -i wlan0 -s 192.168.0.0/24 -j EVG_HOTSPOT"'
 ok "whitelist car: jump first in INPUT (IPv6, link-local only)" 'grep "^INPUT " "$T/v6" | head -1 | grep -qx "INPUT -i wlan0 -s fe80::/10 -j EVG_HOTSPOT"'
-ok "CarPlay ports both ways, tcp and udp" '[ "$(grep -c "^EVG_HOTSPOT -p" "$T/v4")" = 28 ] && grep -qx "EVG_HOTSPOT -p tcp -m tcp --dport 7000 -j ACCEPT" "$T/v4" && grep -qx "EVG_HOTSPOT -p udp -m udp --sport 5000:5001 -j ACCEPT" "$T/v4"'
+ok "CarPlay and Android Auto ports both ways, tcp and udp" '[ "$(grep -c "^EVG_HOTSPOT -p" "$T/v4")" = 32 ] && grep -qx "EVG_HOTSPOT -p tcp -m tcp --dport 7000 -j ACCEPT" "$T/v4" && grep -qx "EVG_HOTSPOT -p tcp -m tcp --dport 40515 -j ACCEPT" "$T/v4" && grep -qx "EVG_HOTSPOT -p udp -m udp --sport 5000:5001 -j ACCEPT" "$T/v4"'
 ok "ICMPv6 on IPv6 only" 'grep -q icmpv6 "$T/v6" && ! grep -q icmpv6 "$T/v4"'
 ok "stock rules untouched" 'grep -qx "INPUT -j WLIST_IN" "$T/v4" && grep -qx "WLIST_IN -i wlan0 -j WL_WLAN0_IN" "$T/v4"'
 ok "logged" 'grep -q "IPv4: stock whitelist firewall found" "$T/out"'
@@ -61,7 +61,7 @@ ok "nothing added again when in place" 'cmp -s "$T/v4" "$T/v4.before"'
 # the stock firewall reloads: flushes INPUT and puts its own rules back
 echo 'grep -v "^INPUT -i wlan0" '"$T"'/v4 > '"$T"'/x; mv '"$T"'/x '"$T"'/v4' > "$T/onsleep"
 run 2
-ok "put back after the stock firewall reloads" '[ "$(grep -c "^INPUT -i wlan0 -s 192.168.0.0/24 -j EVG_HOTSPOT" "$T/v4")" = 1 ] && [ "$(grep -c "^EVG_HOTSPOT " "$T/v4")" = 28 ]'
+ok "put back after the stock firewall reloads" '[ "$(grep -c "^INPUT -i wlan0 -s 192.168.0.0/24 -j EVG_HOTSPOT" "$T/v4")" = 1 ] && [ "$(grep -c "^EVG_HOTSPOT " "$T/v4")" = 32 ]'
 sh -c "cd '$T' && FW_PASSES=1 '$SH' '$T/fw.sh' remove" > /dev/null 2>&1
 ok "remove: no jump and no chain left" '! grep -q EVG_HOTSPOT "$T/v4" && ! grep -q EVG_HOTSPOT "$T/v6"'
 ok "remove: stock rules kept" 'grep -qx "INPUT -j WLIST_IN" "$T/v4"'

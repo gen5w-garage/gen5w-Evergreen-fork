@@ -6,13 +6,15 @@
 # 6 s after power-on): policy DROP, and WLIST_IN sends each interface to its own
 # chain. The hotspot (wlan0) only gets DNS, DHCP and Bonjour; the CarPlay ports are
 # open only on ncm0 (wired CarPlay). So an iPhone finds the car over the hotspot,
-# then its connection is dropped.
+# then its connection is dropped; an Android phone gets the hotspot's details over
+# Bluetooth, joins, and its connection to the head unit is dropped the same way.
 #
 # On such a car (chain WLIST_IN present) this puts its own chain EVG_HOTSPOT first in
 # INPUT, for packets coming in on wlan0 from the hotspot's own addresses only
 # (192.168.0.0/24, and link-local fe80::/10 for IPv6, which iPhones use for CarPlay),
 # accepting the same ports the stock firewall opens for wired CarPlay (either way,
-# as the stock rules do) and, for IPv6, ICMPv6 (neighbour discovery). Nothing else
+# as the stock rules do), the port wireless Android Auto's phone connects to, and,
+# for IPv6, ICMPv6 (neighbour discovery). Nothing else
 # changes. The rules live in memory only: they are gone after a restart, and the
 # stock firewall can load or reload after this starts, so they are checked every
 # POLL_S seconds and put back when missing. Uninstall (scripts/preun.sh) takes them
@@ -24,7 +26,10 @@ export PATH=/data/nemesis/bin:/sbin:/vendor/bin:/system/sbin:/system/bin:/system
 
 POLL_S=${FW_POLL_S:-10}
 CHAIN=EVG_HOTSPOT
-PORTS="5000:5001 5020 6000:6003 6011 6020 6030 7000"
+# CarPlay: the ports the stock firewall opens for wired CarPlay. Android Auto: 40515,
+# the port GPM tells the phone to connect to (WirelessExplorer, WifiData.setPort).
+# 7000 stays last: present() checks the chain's last rule.
+PORTS="40515 5000:5001 5020 6000:6003 6011 6020 6030 7000"
 
 log() {
     echo "$(date) $1"
