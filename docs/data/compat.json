@@ -30,6 +30,7 @@
       },
       "built": {
         "/system/app/HKMC_BtSettings.apk": [
+          "3a8b442c13259943a8726fbc15a00fb9",
           "4b56912c836261cafecad6ae2b1407a6",
           "575ac7eb4e01e0111b444697b9f6a4e8",
           "93ecaa97597a79be2a10728e45c72b33",
@@ -83,6 +84,7 @@
       },
       "built": {
         "/system/app/HKMC_BtSettings.apk": [
+          "3a8b442c13259943a8726fbc15a00fb9",
           "4b56912c836261cafecad6ae2b1407a6",
           "575ac7eb4e01e0111b444697b9f6a4e8",
           "93ecaa97597a79be2a10728e45c72b33",
@@ -145,6 +147,7 @@
       },
       "built": {
         "/system/app/HKMC_BtSettings.apk": [
+          "3a8b442c13259943a8726fbc15a00fb9",
           "4b56912c836261cafecad6ae2b1407a6",
           "575ac7eb4e01e0111b444697b9f6a4e8",
           "93ecaa97597a79be2a10728e45c72b33",
@@ -202,6 +205,7 @@
       },
       "built": {
         "/system/app/HKMC_BtSettings.apk": [
+          "3a8b442c13259943a8726fbc15a00fb9",
           "4b56912c836261cafecad6ae2b1407a6",
           "575ac7eb4e01e0111b444697b9f6a4e8",
           "93ecaa97597a79be2a10728e45c72b33",
@@ -262,6 +266,7 @@
       },
       "built": {
         "/system/app/HKMC_BtSettings.apk": [
+          "3a8b442c13259943a8726fbc15a00fb9",
           "4b56912c836261cafecad6ae2b1407a6",
           "575ac7eb4e01e0111b444697b9f6a4e8",
           "93ecaa97597a79be2a10728e45c72b33",
@@ -317,6 +322,7 @@
       },
       "built": {
         "/system/app/HKMC_BtSettings.apk": [
+          "3a8b442c13259943a8726fbc15a00fb9",
           "4b56912c836261cafecad6ae2b1407a6",
           "575ac7eb4e01e0111b444697b9f6a4e8",
           "93ecaa97597a79be2a10728e45c72b33",
@@ -371,6 +377,7 @@
       },
       "built": {
         "/system/app/HKMC_BtSettings.apk": [
+          "3a8b442c13259943a8726fbc15a00fb9",
           "4b56912c836261cafecad6ae2b1407a6",
           "575ac7eb4e01e0111b444697b9f6a4e8",
           "93ecaa97597a79be2a10728e45c72b33",
@@ -425,6 +432,7 @@
       },
       "built": {
         "/system/app/HKMC_BtSettings.apk": [
+          "3a8b442c13259943a8726fbc15a00fb9",
           "4b56912c836261cafecad6ae2b1407a6",
           "575ac7eb4e01e0111b444697b9f6a4e8",
           "93ecaa97597a79be2a10728e45c72b33",
@@ -478,6 +486,7 @@
       },
       "built": {
         "/system/app/HKMC_BtSettings.apk": [
+          "3a8b442c13259943a8726fbc15a00fb9",
           "4b56912c836261cafecad6ae2b1407a6",
           "575ac7eb4e01e0111b444697b9f6a4e8",
           "93ecaa97597a79be2a10728e45c72b33",
@@ -502,6 +511,59 @@
         ],
         "/system/lib/libautoreceiver_infobank.so": [
           "c08410a8d32a615b1aa805cd8a243d52"
+        ]
+      }
+    },
+    {
+      "id": "hyundai-ioniq6-us-260903",
+      "name": "Hyundai Ioniq 6",
+      "region": "US",
+      "chip": "TCC803x",
+      "product_prefix": "CEEV.USA.",
+      "firmware": "V016.010.260903",
+      "status": "testing",
+      "verified": [
+        "Sandbox install and uninstall on this car's own files (owner's port kit)"
+      ],
+      "notes": "Ported from the Palisade's 260903 build. Its Android Auto library is its own build, so it has its own turn-by-turn patch. This car's stock firewall only lets wired CarPlay through, so the package opens the same CarPlay ports on the head unit's hotspot (in memory only, gone after uninstall). Not yet confirmed on the car.",
+      "stock": {
+        "/system/app/HKMC_DiPO.apk": "c217986e99511cbbcc15385a32bb7329",
+        "/system/app/HKMC_DiPO.odex": "14383f8e014921fa30797b23a17b10a4",
+        "/system/app/HKMC_GPM.apk": "8c8fcd7432e82357284fec3185846e73",
+        "/system/app/HKMC_GPM.odex": "2f61381ea334d91019e3b51a59ec21b8",
+        "/system/app/HKMC_Navi_ExSL.apk": "5646246c0a8a7a7df4586a2514a4a775",
+        "/system/app/HKMC_Navi_ExSL.odex": "2159a4389b572f465c41ea2dbe40c6a4",
+        "/system/app/Iap2ServerApp.apk": "fde208439f993986a60396e759797a01",
+        "/system/app/Iap2ServerApp.odex": "46f392ece018bb218d180035b28e658b",
+        "/system/lib/libautoreceiver_infobank.so": "dbfe7bd2e36152a50f97fed612cf6326"
+      },
+      "built": {
+        "/system/app/HKMC_BtSettings.apk": [
+          "3a8b442c13259943a8726fbc15a00fb9",
+          "4b56912c836261cafecad6ae2b1407a6",
+          "575ac7eb4e01e0111b444697b9f6a4e8",
+          "93ecaa97597a79be2a10728e45c72b33",
+          "a8ca2abd8235c57a50d580aed8a2de3e",
+          "b977e268fbe73cb5637c4413647a7dea",
+          "cd98c36db6857ed174757c6010a36494",
+          "e7c90e78f45f7e6b9c90ddd7a238b566"
+        ],
+        "/system/app/HKMC_DiPO.apk": [
+          "26c3ff7b920a4338ae5c2fb725405864",
+          "f8a39c4f064191eb0961d20532944f17"
+        ],
+        "/system/app/HKMC_GPM.apk": [
+          "0a82555e51bbe93a006d813e7e03747c"
+        ],
+        "/system/app/HKMC_Navi_ExSL.apk": [
+          "fe137738907d25367465cb0ace5c8e34"
+        ],
+        "/system/app/Iap2ServerApp.apk": [
+          "75d7fea4d2009be6aa5c840118f58c94",
+          "7e90fa7d8a161ade71e11dc15e56c410"
+        ],
+        "/system/lib/libautoreceiver_infobank.so": [
+          "2a7ed397693c411a165a13f5886fffab"
         ]
       }
     },
@@ -531,6 +593,7 @@
       },
       "built": {
         "/system/app/HKMC_BtSettings.apk": [
+          "3a8b442c13259943a8726fbc15a00fb9",
           "4b56912c836261cafecad6ae2b1407a6",
           "575ac7eb4e01e0111b444697b9f6a4e8",
           "93ecaa97597a79be2a10728e45c72b33",

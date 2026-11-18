@@ -10,6 +10,9 @@ apps_hold "$_rev"
 uninstall_parts "$_rev" || exit 1
 apps_release
 rm -f "$PARTS_FILE"
+# the hotspot firewall rules (memory only; on an update the new version's service
+# puts them back within seconds)
+sh ./svc/hotspot-firewall.sh remove && log "hotspot firewall rules taken out (if there were any)"
 # On an update the new version keeps ADB over network as it is: putting the stock
 # switch back would restart adbd and end an `adb shell` running the update (#17).
 if updating; then
