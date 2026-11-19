@@ -55,8 +55,10 @@ log "wifi-client-warn started"
 LAST=""      # last known state; empty until Android answers
 PENDING=0    # on seen at boot: warn on the next pass, once the UI is up
 while true; do
-    _s=$(wifi_state)
-    if [ -n "$_s" ] && [ ! -f "$OPTIN" ]; then
+    # `settings` starts a Java VM: not asked at all while the owner has opted in
+    _s=""
+    [ -f "$OPTIN" ] || _s=$(wifi_state)
+    if [ -n "$_s" ]; then
         if [ "$_s" = on ]; then
             if [ "$PENDING" = 1 ]; then
                 log "Wi-Fi client is on: warned"
