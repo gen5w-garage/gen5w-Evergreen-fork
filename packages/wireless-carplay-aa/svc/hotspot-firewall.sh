@@ -13,7 +13,8 @@
 # INPUT, for packets coming in on wlan0 from the hotspot's own addresses only
 # (192.168.0.0/24, and link-local fe80::/10 for IPv6, which iPhones use for CarPlay),
 # accepting the same ports the stock firewall opens for wired CarPlay (either way,
-# as the stock rules do), the port wireless Android Auto's phone connects to, and,
+# as the stock rules do, but TCP from one of those source ports only when it isn't a
+# new connection), the port wireless Android Auto's phone connects to, and,
 # for IPv6, ICMPv6 (neighbour discovery). Nothing else
 # changes. The rules live in memory only: they are gone after a restart, and the
 # stock firewall can load or reload after this starts, so they are checked every
@@ -87,7 +88,13 @@ apply() {
     for _x in dport sport; do
         for _p in tcp udp; do
             for _y in $PORTS; do
-                ipt "$_v" -A $CHAIN -p $_p -m $_p --$_x "$_y" -j ACCEPT
+                if [ "$_x" = sport ] && [ "$_p" = tcp ]; then
+                    # replies only: a new connection from one of these source ports would
+                    # otherwise reach every port on the head unit
+                    ipt "$_v" -A $CHAIN -p tcp -m tcp --sport "$_y" ! --syn -j ACCEPT
+                else
+                    ipt "$_v" -A $CHAIN -p $_p -m $_p --$_x "$_y" -j ACCEPT
+                fi
             done
         done
     done
