@@ -39,7 +39,7 @@
 # Needs: qemu-arm-static (runs the ARM lpatch), unzip, md5sum.
 set -e
 if [ $# -ne 4 ] || [ "$1" = -h ] || [ "$1" = --help ]; then
-    sed -n '2,24p' "$0" | sed 's/^# \{0,1\}//'
+    sed -n '2,/^[^#]/s/^# \{0,1\}//p' "$0"
     exit 2
 fi
 for t in qemu-arm-static unzip md5sum; do
