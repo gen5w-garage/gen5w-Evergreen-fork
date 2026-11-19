@@ -61,7 +61,7 @@ Being tested:
 | Hyundai Ioniq 6 (US) | 260903 |
 | Kia EV6 and Hyundai Ioniq 5 (Canada) | 260206 |
 
- See the [compatibility page](https://zpoon.github.io/gen5w-Evergreen/) for the full, current list.
+See the [compatibility page](https://zpoon.github.io/gen5w-Evergreen/) for the full, current list.
 
 **Update your head unit first.** Evergreen supports only each car's newest software for its region. On older software it installs basic mode and asks you to update. Updates are free with the Hyundai, Kia or Genesis Navigation Updater.
 
