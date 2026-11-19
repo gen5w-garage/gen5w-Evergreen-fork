@@ -1,3 +1,5 @@
+<p align="center"><img src="docs/assets/evergreen-icon.svg" alt="Evergreen icon: a pine tree sending out wireless waves" width="160"></p>
+
 # Evergreen
 
 *A community continuation of HMG Leafia Plus.*
