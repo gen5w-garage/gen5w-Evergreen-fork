@@ -37,7 +37,8 @@ printf '#!/bin/sh\nexec %s/bin/fakeipt %s/v4 "$@"\n' "$T" "$T" > "$T/bin/iptable
 printf '#!/bin/sh\nexec %s/bin/fakeipt %s/v6 "$@"\n' "$T" "$T" > "$T/bin/ip6tables"
 printf '#!/bin/sh\n[ -f %s/onsleep ] && sh %s/onsleep; rm -f %s/onsleep\nexit 0\n' "$T" "$T" "$T" > "$T/bin/sleep"
 chmod +x "$T/bin/"*
-sed -e "s|^export PATH=.*|export PATH=$T/bin:/usr/bin:/bin|" \
+# sleep as a function: some mksh builds (Fedora's) have sleep as a builtin, which would skip the stand-in (and wait)
+sed -e "s|^export PATH=.*|export PATH=$T/bin:/usr/bin:/bin|" -e "/^export PATH=/a sleep() { \"$T/bin/sleep\" \"\$@\"; }" \
     "$ROOT/packages/wireless-carplay-aa/svc/hotspot-firewall.sh" > "$T/fw.sh"
 
 stock() {   # the stock whitelist firewall, as the car loads it
