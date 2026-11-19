@@ -18,4 +18,19 @@ grep -v hcan "$T/match" > "$T/old"
 ok "older kit: asks for a new report" '[ "$(run "$T/old")" = 1 ] && grep -q "older kit" "$T/out"'
 echo "no product here" > "$T/bad"
 ok "not a report" '[ "$(run "$T/bad")" = 2 ]'
+ok "no report given: usage, exit 2" '[ "$(python3 "$ROOT/tools/ev-check.py" > "$T/out" 2>&1 && echo 0 || echo $?)" = 2 ] && grep -q "LEAFIA-REPORT" "$T/out"'
+# with Evergreen installed: the library is one its patches made from the stock library
+lib() { sed "s/^\(file \/system\/lib\/libautoreceiver_infobank.so md5=\).*/\1$1/" "$T/match"; }
+LIBS=$(awk '$3 == "libautoreceiver_infobank.so" && $4 ~ /^common\// { print $5 }' "$ROOT"/patches/*/manifest | sort -u)
+ok "Evergreen's libraries found in the manifests" '[ -n "$LIBS" ]'
+for h in $LIBS; do
+    { lib "$h"; echo "pkg wireless.carplay.aa"; } > "$T/inst"
+    ok "Evergreen installed, its library $h: fits" '[ "$(run "$T/inst")" = 0 ] && grep -q "EV build fits" "$T/out"'
+done
+OTHER=$(awk '$3 == "libautoreceiver_infobank.so" { print $5 }' "$ROOT/patches/neev_ca/manifest")
+lib "$OTHER" > "$T/other"
+ok "a library built from another stock one: differs" '[ -n "$OTHER" ] && [ "$(run "$T/other")" = 1 ] && grep -q "Android Auto library differs" "$T/out"'
+{ sed 's/^\(code \/system\/app\/HKMC_GPM.odex md5=\).*/\1bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/' "$T/match"; echo "pkg wireless.carplay.aa"; } > "$T/instcode"
+ok "Evergreen installed, GPM code not stock: can't be checked, not a rebuild" '[ "$(run "$T/instcode")" = 1 ] && grep -q "GPM app code can.t be checked" "$T/out" && ! grep -q "GPM app code differs" "$T/out"'
+ok "GPM code differs without Evergreen installed: still a rebuild" '[ "$(run "$T/code")" = 1 ] && ! grep -q "can.t be checked" "$T/out"'
 [ $fail = 0 ]
