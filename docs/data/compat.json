@@ -521,11 +521,12 @@
       "chip": "TCC803x",
       "product_prefix": "CEEV.USA.",
       "firmware": "V016.010.260903",
-      "status": "testing",
+      "status": "supported",
       "verified": [
+        "Wireless CarPlay and Android Auto (owner, 1.3.1 test build)",
         "Sandbox install and uninstall on this car's own files (owner's port kit)"
       ],
-      "notes": "Ported from the Palisade's 260903 build. Its Android Auto library is its own build, so it has its own turn-by-turn patch. This car's stock firewall only lets wired CarPlay through, so the package opens the CarPlay ports and the wireless Android Auto port on the head unit's hotspot (in memory only, gone after uninstall). Not yet confirmed on the car.",
+      "notes": "Ported from the Palisade's 260903 build. Its Android Auto library is its own build, so it has its own turn-by-turn patch. This car's stock firewall only lets wired CarPlay through, so the package opens the CarPlay ports and the wireless Android Auto port on the head unit's hotspot (in memory only, gone after uninstall).",
       "stock": {
         "/system/app/HKMC_DiPO.apk": "c217986e99511cbbcc15385a32bb7329",
         "/system/app/HKMC_DiPO.odex": "14383f8e014921fa30797b23a17b10a4",
