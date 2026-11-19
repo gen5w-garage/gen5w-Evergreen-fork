@@ -33,8 +33,8 @@
 #                           (android.hardware.wifi.xml, persist.wifi.state=3, wifi_on=1):
 #                           the uninstall must leave it on and everything else stock (#17)
 #   MOCK_UPDATE=1           the uninstall is the first half of an update (NEMESIS has
-#                           staged the new version): ADB over network stays as the install
-#                           left it, for the new version (#17)
+#                           staged the new version, here the same package again): ADB over
+#                           network stays as the install left it, for the new version (#17)
 #
 # Needs: qemu-arm-static (runs the ARM lpatch), unzip, md5sum.
 set -e
@@ -140,14 +140,21 @@ fi
 stopped_left() { ls "$X" | grep '^pm_disabled_' | sed 's/^pm_disabled_//' | tr '\n' ' '; }
 [ "$MOCK_ADB_TCP" = 1 ] && echo 1 > "$X/prop_persist.service.adb.tcp.enable"
 adb_props() { echo "enable=$(cat "$X/prop_persist.service.adb.tcp.enable" 2>/dev/null) port=$(cat "$X/prop_persist.adb.tcp.port" 2>/dev/null)"; }
+# NEMESIS unpacks the package here first and removes it after the postinstall hook,
+# unless the hook rebooted the head unit (post.sh does): then nothing removes it
+STAGE=$R/data/local/tmp/nemesis/stage/wireless.carplay.aa
+stage() { rm -rf "$STAGE"; mkdir -p "$STAGE"; cp -R "$X/pkg/." "$STAGE/"; }
+stage
 cd "$X/pkg"; export LPATCH="$X/stub/lpatch_q"
 ok=1
 if "$SH" scripts/pre.sh > "$X/pre.log" 2>&1; then
     "$SH" scripts/post.sh > "$X/post.log" 2>&1 || true
     if grep -q 'all parts installed' "$X/post.log"; then
         echo "INSTALL OK $(grep -o -E "(full|basic) mode[^)]*" "$X/post.log" | head -1)"
+        if [ -e "$STAGE" ]; then echo "NEMESIS stage left after the reboot: an uninstall would look like an update"; ok=0; fi
     else
         echo "INSTALL FAILED"; grep -i 'fail' "$X/post.log" | head; ok=0
+        rm -rf "$STAGE"
     fi
     if [ "$MOCK_ADB_TCP" = 1 ]; then
         _a=$(adb_props); echo "adb after install: $_a"; [ "$_a" = "enable=0 port=5555" ] || ok=0
@@ -170,10 +177,7 @@ if "$SH" scripts/pre.sh > "$X/pre.log" 2>&1; then
         echo 3 > "$X/prop_persist.wifi.state"; echo 1 > "$X/set_wifi_on"
         echo "owner turned the Wi-Fi client on after the install"
     fi
-    if [ "$MOCK_UPDATE" = 1 ]; then
-        mkdir -p "$R/data/local/tmp/nemesis/stage/wireless.carplay.aa"
-        cp "$X/pkg/NEMESIS.data" "$R/data/local/tmp/nemesis/stage/wireless.carplay.aa/"
-    fi
+    [ "$MOCK_UPDATE" = 1 ] && stage
     "$SH" scripts/preun.sh > "$X/preun.log" 2>&1 || true
     (cd "$R" && find system -type f -exec md5sum {} \; | sort -k2) > "$X/after.md5"
     if [ "$MOCK_OWNER_WIFI" = 1 ]; then
