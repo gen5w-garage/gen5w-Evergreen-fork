@@ -77,7 +77,7 @@ See the [compatibility page](https://zpoon.github.io/gen5w-Evergreen/). The data
 
 **Added since Leafia v1.0.5:** Hyundai Ioniq 5 US on 260903 (2022–2024), the Ioniq 5 2024 SE on 260507, the Kia Sportage and Sportage Hybrid US on 260507, and the Hyundai Palisade US on 260903 (2025). The compatibility page shows each car's status.
 
-**Newest firmware only.** We support each car's newest head unit software for its region: currently **260507** in the US (and **260903** for the Ioniq 5) and **260206** in Canada. On older firmware the package installs wireless Android Auto only (basic mode) and asks you to update; use the free Hyundai, Kia or Genesis Navigation Updater, then install again.
+**Newest firmware only.** We support each car's newest head unit software for its region: currently **260507** in the US (and **260903** for the Ioniq 5) and **260206** in Canada (and **260903** for the Ioniq 5). On older firmware the package installs wireless Android Auto only (basic mode) and asks you to update; use the free Hyundai, Kia or Genesis Navigation Updater, then install again.
 
 **Navigation trims only.** Gen5W is the head unit in trims with built-in navigation. Trims without navigation have a different head unit ("Display Audio", for example "Display Audio Gen2V" on the Tucson) that NEMESIS and this package don't support.
 
