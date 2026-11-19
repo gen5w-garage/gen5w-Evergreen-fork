@@ -18,13 +18,20 @@
 # changes. The rules live in memory only: they are gone after a restart, and the
 # stock firewall can load or reload after this starts, so they are checked every
 # POLL_S seconds and put back when missing. Uninstall (scripts/preun.sh) takes them
-# out with "hotspot-firewall.sh remove". On cars without the whitelist it does nothing.
+# out with "hotspot-firewall.sh remove". On cars without the whitelist it does nothing:
+# it looks for it every POLL_S seconds for the first SETTLE_S seconds after it starts
+# (power-on, or a restart of the service while the stock firewall may be reloading),
+# then every IDLE_S seconds, in case it loads later; each look is one iptables and
+# one ip6tables. Once a whitelist has been seen it keeps to POLL_S, even through a pass
+# that misses it while the stock firewall reloads.
 # Output goes to NEMESIS's service log: nemesis log service wireless.carplay.aa/hotspot-firewall
 # FW_PASSES=N stops after N passes (host sandbox test; unset = forever).
 
 export PATH=/data/nemesis/bin:/sbin:/vendor/bin:/system/sbin:/system/bin:/system/xbin
 
 POLL_S=${FW_POLL_S:-10}
+SETTLE_S=${FW_SETTLE_S:-180}
+IDLE_S=${FW_IDLE_S:-300}
 CHAIN=EVG_HOTSPOT
 # CarPlay: the ports the stock firewall opens for wired CarPlay. Android Auto: 40515,
 # the port GPM tells the phone to connect to (WirelessExplorer, WifiData.setPort).
@@ -50,7 +57,7 @@ has() {
     if [ "$1" = 6 ]; then ip6tables -S INPUT >/dev/null 2>&1; else iptables -S INPUT >/dev/null 2>&1; fi
 }
 
-# whitelist <4|6>: the stock whitelist firewall is loaded
+# whitelist <4|6>: the stock whitelist firewall is loaded (and so the tool is there)
 whitelist() {
     ipt "$1" -S WLIST_IN
 }
@@ -94,10 +101,14 @@ fi
 
 log "hotspot-firewall started"
 STATE4=""; STATE6=""
+seen=""
+started=0
+read -r started _ < /proc/uptime 2>/dev/null || true
+started=${started%%.*}
 while true; do
     for v in 4 6; do
-        has $v || continue
         if whitelist $v; then
+            seen=1
             if ! present $v; then
                 if apply $v && present $v; then
                     log "IPv$v: stock whitelist firewall found, CarPlay ports opened on the hotspot"
@@ -121,5 +132,12 @@ while true; do
         FW_PASSES=$((FW_PASSES - 1))
         [ "$FW_PASSES" -le 0 ] && exit 0
     fi
-    sleep "$POLL_S"
+    if [ -n "$seen" ]; then
+        sleep "$POLL_S"
+    else
+        up=0
+        read -r up _ < /proc/uptime 2>/dev/null || true
+        up=${up%%.*}
+        if [ $((${up:-0} - ${started:-0})) -lt "$SETTLE_S" ]; then sleep "$POLL_S"; else sleep "$IDLE_S"; fi
+    fi
 done

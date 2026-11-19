@@ -35,10 +35,13 @@ esac
 EOF
 printf '#!/bin/sh\nexec %s/bin/fakeipt %s/v4 "$@"\n' "$T" "$T" > "$T/bin/iptables"
 printf '#!/bin/sh\nexec %s/bin/fakeipt %s/v6 "$@"\n' "$T" "$T" > "$T/bin/ip6tables"
-printf '#!/bin/sh\n[ -f %s/onsleep ] && sh %s/onsleep; rm -f %s/onsleep\nexit 0\n' "$T" "$T" "$T" > "$T/bin/sleep"
+# the sleep stand-in moves the uptime on by what was asked, and runs an onsleep hook once
+printf '#!/bin/sh\necho "$1" >> %s/slept\nread -r u r < %s/uptime\necho "$((${u%%%%.*} + $1)).00 0.00" > %s/uptime\n[ -f %s/onsleep ] && sh %s/onsleep; rm -f %s/onsleep\nexit 0\n' "$T" "$T" "$T" "$T" "$T" "$T" > "$T/bin/sleep"
 chmod +x "$T/bin/"*
+echo "1000.00 900.00" > "$T/uptime"
 # sleep as a function: some mksh builds (Fedora's) have sleep as a builtin, which would skip the stand-in (and wait)
 sed -e "s|^export PATH=.*|export PATH=$T/bin:/usr/bin:/bin|" -e "/^export PATH=/a sleep() { \"$T/bin/sleep\" \"\$@\"; }" \
+    -e "s|/proc/uptime|$T/uptime|g" \
     "$ROOT/packages/wireless-carplay-aa/svc/hotspot-firewall.sh" > "$T/fw.sh"
 
 stock() {   # the stock whitelist firewall, as the car loads it
@@ -47,7 +50,7 @@ stock() {   # the stock whitelist firewall, as the car loads it
     done
 }
 plain() { for v in v4 v6; do printf 'chain INPUT\n' > "$T/$v"; done; }
-run() { FW_PASSES=$1 "$SH" "$T/fw.sh" > "$T/out" 2>&1; }
+run() { rm -f "$T/slept"; FW_PASSES=$1 "$SH" "$T/fw.sh" > "$T/out" 2>&1; }
 
 stock; run 1
 ok "whitelist car: jump first in INPUT (IPv4, hotspot addresses only)" 'grep "^INPUT " "$T/v4" | head -1 | grep -qx "INPUT -i wlan0 -s 192.168.0.0/24 -j EVG_HOTSPOT"'
@@ -68,6 +71,27 @@ ok "remove: no jump and no chain left" '! grep -q EVG_HOTSPOT "$T/v4" && ! grep 
 ok "remove: stock rules kept" 'grep -qx "INPUT -j WLIST_IN" "$T/v4"'
 plain; run 2
 ok "no whitelist firewall: nothing added" '! grep -q EVG_HOTSPOT "$T/v4" && ! grep -q EVG_HOTSPOT "$T/v6" && grep -q "no stock whitelist" "$T/out"'
+echo "30.00 20.00" > "$T/uptime"; plain; run 2
+ok "no whitelist firewall yet, just after power-on: looks again every 10 s" '[ "$(cat "$T/slept")" = 10 ]'
+# 3 minutes of 10 s looks from the service's start (18 of them), then every 5 minutes
+echo "1000.00 900.00" > "$T/uptime"; plain; run 20
+ok "no whitelist firewall, 3 minutes after the service started: looks again every 5 minutes" '[ "$(grep -c "^10$" "$T/slept")" = 18 ] && [ "$(sed -n 19p "$T/slept")" = 300 ] && [ "$(wc -l < "$T/slept")" = 19 ]'
+# the service restarted long after power-on, while the stock firewall reloads (its chains gone
+# for a moment): still looks every 10 s, so the rules come back within 10 s, not 5 minutes
+echo "1000.00 900.00" > "$T/uptime"; plain; printf 'printf "chain INPUT\\nINPUT -j WLIST_IN\\nchain WLIST_IN\\n" > %s/v4\n' "$T" > "$T/onsleep"; run 3
+ok "restarted during a stock firewall reload, long after power-on: still every 10 s, rules back" '[ "$(tr "\n" " " < "$T/slept")" = "10 10 " ] && grep -q "^INPUT -i wlan0 -s 192.168.0.0/24 -j EVG_HOTSPOT" "$T/v4"'
+echo "1000.00 900.00" > "$T/uptime"; stock; run 2
+ok "whitelist car: checked every 10 s" '[ "$(cat "$T/slept")" = 10 ]'
+# the stock firewall reloading, its chains gone for a moment: still checked every 10 s
+stock; printf 'for v in v4 v6; do printf "chain INPUT\\n" > %s/$v; done\n' "$T" > "$T/onsleep"; run 3
+ok "whitelist car, a pass while the stock firewall reloads: still every 10 s" '[ "$(tr "\n" " " < "$T/slept")" = "10 10 " ]'
+# the same past the first 3 minutes (no settle window): the whitelist once seen keeps it to 10 s
+export FW_SETTLE_S=0
+echo "1000.00 900.00" > "$T/uptime"; stock; run 3
+ok "whitelist car, past the first 3 minutes: still every 10 s" '[ "$(tr "\n" " " < "$T/slept")" = "10 10 " ]'
+stock; printf 'for v in v4 v6; do printf "chain INPUT\\n" > %s/$v; done\n' "$T" > "$T/onsleep"; run 3
+ok "whitelist car, past the first 3 minutes, a pass during a reload: still every 10 s" '[ "$(tr "\n" " " < "$T/slept")" = "10 10 " ]'
+unset FW_SETTLE_S
 stock; touch "$T/v6.gone"; run 1
 ok "no ip6tables: IPv4 still done, no error" 'grep -q EVG_HOTSPOT "$T/v4" && ! grep -qi "not found" "$T/out"'
 rm -f "$T/v6.gone"
