@@ -24,7 +24,10 @@ case "$op" in
   -X) grep -qx "chain $ch" "$f" || exit 1; grep -q "^$ch " "$f" && exit 1
       grep -vx "chain $ch" "$f" > "$f.t" || true; mv "$f.t" "$f" ;;
   -F) grep -qx "chain $ch" "$f" || exit 1; grep -v "^$ch " "$f" > "$f.t" || true; mv "$f.t" "$f" ;;
-  -A) grep -qx "chain $ch" "$f" || exit 1; echo "$ch $rule" >> "$f" ;;
+  -A) grep -qx "chain $ch" "$f" || exit 1
+      # an iptables without the tcp match's ! --syn refuses the rule ($f.nosyn)
+      case "$rule" in *"! --syn"*) [ -f "$f.nosyn" ] && exit 1 ;; esac
+      echo "$ch $rule" >> "$f" ;;
   -I) n=$1; shift; rule="$*"; grep -qx "chain $ch" "$f" || exit 1
       { grep -vx "chain $ch" "$f" | grep -v "^$ch " || true; echo "chain $ch"; echo "$ch $rule"; grep "^$ch " "$f" || true; } > "$f.t"; mv "$f.t" "$f" ;;
   -D) grep -qxF "$ch $rule" "$f" || exit 1
@@ -100,7 +103,14 @@ ok "whitelist car, past the first 3 minutes, a pass during a reload: still every
 unset FW_SETTLE_S
 stock; touch "$T/v6.gone"; run 1
 ok "no ip6tables: IPv4 still done, no error" 'grep -q EVG_HOTSPOT "$T/v4" && ! grep -qi "not found" "$T/out"'
+sh -c "cd '$T' && FW_PASSES=1 '$SH' '$T/fw.sh' remove" > "$T/out" 2>&1
+ok "no ip6tables: remove takes IPv4's out, no error" '! grep -q EVG_HOTSPOT "$T/v4" && [ ! -s "$T/out" ]'
 rm -f "$T/v6.gone"
+# an iptables that refuses ! --syn: the TCP reply rules are missing, so the rules aren't taken as in
+# place (it says so and tries again) rather than reported as opened
+stock; touch "$T/v4.nosyn" "$T/v6.nosyn"; run 1
+ok "an iptables that refuses ! --syn: not reported as opened, said and tried again" '! grep -q "CarPlay ports opened" "$T/out" && grep -q "could not put the hotspot rules in" "$T/out"'
+rm -f "$T/v4.nosyn" "$T/v6.nosyn"
 # the firewall appears only after the service starts (iptrules runs about 6 s after power-on)
 plain; echo "printf 'chain WLIST_IN\n' >> $T/v4" > "$T/onsleep"; run 2
 ok "firewall loaded after start: picked up on the next pass" 'grep -q "^INPUT -i wlan0 -s 192.168.0.0/24 -j EVG_HOTSPOT" "$T/v4"'
