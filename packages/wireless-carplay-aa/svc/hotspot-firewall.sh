@@ -36,7 +36,7 @@ IDLE_S=${FW_IDLE_S:-300}
 CHAIN=EVG_HOTSPOT
 # CarPlay: the ports the stock firewall opens for wired CarPlay. Android Auto: 40515,
 # the port GPM tells the phone to connect to (WirelessExplorer, WifiData.setPort).
-# 7000 stays last: present() checks the chain's last rule.
+# 7000 stays last: present() checks the chain's last rule, and its TCP reply rule.
 PORTS="40515 5000:5001 5020 6000:6003 6011 6020 6030 7000"
 
 log() {
@@ -53,19 +53,16 @@ src() {
     if [ "$1" = 6 ]; then echo fe80::/10; else echo 192.168.0.0/24; fi
 }
 
-# has <4|6>: the tool is there
-has() {
-    if [ "$1" = 6 ]; then ip6tables -S INPUT >/dev/null 2>&1; else iptables -S INPUT >/dev/null 2>&1; fi
-}
-
 # whitelist <4|6>: the stock whitelist firewall is loaded (and so the tool is there)
 whitelist() {
     ipt "$1" -S WLIST_IN
 }
 
-# present <4|6>: our jump and the last rule of our chain are in place
+# present <4|6>: our jump, the last TCP reply rule and the last rule of our chain are in place
+# (an iptables that refused ! --syn would leave the TCP reply rules out, and that shows here)
 present() {
     ipt "$1" -C INPUT -i wlan0 -s "$(src "$1")" -j $CHAIN || return 1
+    ipt "$1" -C $CHAIN -p tcp -m tcp --sport 7000 ! --syn -j ACCEPT || return 1
     ipt "$1" -C $CHAIN -p udp -m udp --sport 7000 -j ACCEPT
 }
 
@@ -102,7 +99,7 @@ apply() {
 }
 
 if [ "$1" = remove ]; then
-    for v in 4 6; do has $v && drop $v; done
+    for v in 4 6; do drop $v; done
     exit 0
 fi
 
