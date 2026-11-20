@@ -6,8 +6,11 @@ EV build was made and checked on.
   tools/ev-check.py LEAFIA-REPORT.txt      (or - for stdin)
 
 Needs a report from a kit that lists automotive-service.odex and com.hkmc.ext.hcan.odex
-(kits after 2026-11-06). Exit 0 = every file matches, 1 = something differs or is missing,
-2 = bad input. Reads hashes only; works without any stock files.
+(kits after 2026-11-06). A report taken with Evergreen installed (pkg wireless.carplay.aa)
+works too: an Android Auto library that Evergreen's patches make from the reference stock one
+counts as the same, and the GPM app code, which Evergreen may have replaced, can't be checked.
+Exit 0 = every file matches, 1 = something differs, is missing or can't be checked, 2 = bad
+input or no report given. Reads hashes only; works without any stock files.
 """
 import os
 import re
@@ -17,6 +20,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 REF = os.path.join(ROOT, 'ev', 'car-reference')
 JAVA = os.path.join(ROOT, 'ev', 'gpm-ev', 'src', 'com', 'google', 'android', 'projection',
                     'protocol', 'EvCar.java')
+PATCHES = os.path.join(ROOT, 'patches')
+PKG = 'wireless.carplay.aa'
 
 
 def reference():
@@ -37,8 +42,22 @@ def check_reference(ref):
                  % (hcan, m and m.group(1)))
 
 
+def built_from():
+    """{stock md5: md5s of what the patches here make from it}, from each .lpd's header
+    ("LPD1", source length, source md5, result length, result md5)"""
+    out = {}
+    for d, _, names in os.walk(PATCHES):
+        for n in names:
+            if n.endswith('.lpd'):
+                with open(os.path.join(d, n), 'rb') as f:
+                    h = f.read(44)
+                if len(h) == 44 and h[:4] == b'LPD1':
+                    out.setdefault(h[8:24].hex(), set()).add(h[28:44].hex())
+    return out
+
+
 def parse(text):
-    product, files, codes = None, {}, {}
+    product, files, codes, pkgs = None, {}, {}, set()
     for l in text.splitlines():
         l = l.strip()
         m = re.match(r'prop ro\.build\.product=(\S+)', l)
@@ -47,7 +66,10 @@ def parse(text):
         m = re.match(r'(file|code) (\S+) (md5=([0-9a-f]{32})|none|missing|absent)', l)
         if m:
             (files if m.group(1) == 'file' else codes)[m.group(2)] = m.group(4)
-    return product, files, codes
+        m = re.match(r'pkg (\S+)$', l)
+        if m:
+            pkgs.add(m.group(1))
+    return product, files, codes, pkgs
 
 
 WHAT = {
@@ -59,36 +81,56 @@ WHAT = {
 
 def main():
     if len(sys.argv) != 2:
-        sys.exit(__doc__)
+        print(__doc__.strip(), file=sys.stderr)
+        return 2
     ref = reference()
     check_reference(ref)
     text = sys.stdin.read() if sys.argv[1] == '-' else open(sys.argv[1], encoding='utf-8', errors='replace').read()
-    product, files, codes = parse(text)
+    product, files, codes, pkgs = parse(text)
     if not product:
         print('no "prop ro.build.product=" line: not a Leafia kit report')
         return 2
     print('car: %s' % product)
+    installed = PKG in pkgs
+    ours = built_from()
     bad = {'framework': [], 'code': [], 'file': []}
+    unknown = []
     old_kit = False
     for kind, path, want in ref:
         have = (codes if kind == 'code' else files).get(path, 'unreported')
         if path not in (codes if kind == 'code' else files):
             if kind == 'framework':
                 old_kit = True
-        state = 'same' if have == want else ('not in report' if have == 'unreported' else 'differs')
+        if have == want:
+            state = 'same'
+        elif have == 'unreported':
+            state = 'not in report'
+        elif kind == 'file' and have in ours.get(want, ()):
+            state = "same (Evergreen's build of it installed)"
+        elif kind == 'code' and installed:
+            state = 'not checkable (%s installed)' % PKG
+        else:
+            state = 'differs'
         print('  %-9s %-45s %s' % (kind, path, state))
-        if state != 'same':
+        if state.startswith('not checkable'):
+            unknown.append(path)
+        elif not state.startswith('same'):
             bad[kind].append(path)
     print()
     if old_kit:
         print('This report is from an older kit that doesn\'t list every framework file: '
               'run the current Leafia kit and send its report.')
         return 1
-    if not any(bad.values()):
+    if not any(bad.values()) and not unknown:
         print('EV build fits: the same framework, GPM code and Android Auto library as the '
               'Ioniq 5 US 260507. No new vehicle-command review is needed; the car still needs '
               'its own energy model if it isn\'t an Ioniq 5 with the same battery, and a car test.')
         return 0
+    if unknown:
+        print('The GPM app code can\'t be checked: Evergreen (%s) is installed, and its '
+              'turn-by-turn part replaces the GPM app, so the report may show that build rather '
+              'than the stock app. A report from before the install, or after uninstalling, can '
+              'tell.' % PKG)
     if bad['framework']:
         print('The vehicle framework differs: the EV code would stay off (it reads and sends '
               'nothing on another framework). Adding it needs that car\'s framework files '
