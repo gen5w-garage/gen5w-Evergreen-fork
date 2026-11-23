@@ -15,6 +15,13 @@ if grep -rn --include='*.sh' 'printf' "$ROOT/packages/wireless-carplay-aa" \
     exit 1
 fi
 python3 "$ROOT/tools/check-descriptor.py" >&2
+# Each zip holds its files in a sorted order with one fixed time and the modes git checks out
+# (644, or 755 for executables, whatever the umask), so the same source gives the same bytes
+# (BUILD below still names the commit and the day).
+zipsorted() { # <dir> <zip>: everything under <dir>, directories included
+    (cd "$1" && chmod -R u+rwX,go-w,go+rX . && find . -mindepth 1 -exec touch -t 200001010000.00 {} + \
+        && find . -mindepth 1 | sed 's|^\./||' | LC_ALL=C sort | zip -qX "$2" -@)
+}
 STAGE=$(mktemp -d)
 cp -R "$ROOT/packages/wireless-carplay-aa/." "$STAGE/inner"
 rm -f "$STAGE/inner/README.md"
@@ -26,9 +33,9 @@ rm -f "$STAGE/inner/patches/README.md"
 # which source this package was built from; logged at install, read by the Leafia kit
 echo "$(git -C "$ROOT" describe --always --dirty 2>/dev/null || echo unknown) $(date -u +%Y-%m-%d)" > "$STAGE/inner/BUILD"
 mkdir -p "$STAGE/outer/packages"
-(cd "$STAGE/inner" && zip -qrX "$STAGE/outer/packages/wireless.carplay.aa.zip" .)
+zipsorted "$STAGE/inner" "$STAGE/outer/packages/wireless.carplay.aa.zip"
 printf '[nemesis]\nversion=1.0\ntype=install\npath=packages/wireless.carplay.aa.zip\n' > "$STAGE/outer/NEMESIS.data"
 mkdir -p "$(dirname "$OUT")" && rm -f "$OUT"
-(cd "$STAGE/outer" && zip -qrX "$OUT" NEMESIS.data packages)
+zipsorted "$STAGE/outer" "$OUT"
 rm -r "$STAGE"
 echo "$OUT"
