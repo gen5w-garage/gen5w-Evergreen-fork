@@ -7,7 +7,8 @@
 # with the client on (Settings > Wi-Fi, or NEMESIS Manager's WiFi button) its scans
 # and joins can take the hotspot off its channel: owners report CarPlay dropping
 # and reconnecting every minute or two. This only warns. It reads one setting
-# (wifi_on) and changes nothing.
+# (wifi_on) once a minute and changes nothing. `settings` starts a Java VM each time,
+# so the pop-up can come up to a minute after the client is switched on.
 #
 # Pop-up once after each boot if the client is already on, and each time it is
 # switched on. Nothing when the owner chose the client at install
@@ -17,7 +18,7 @@
 
 export PATH=/data/nemesis/bin:/sbin:/vendor/bin:/system/sbin:/system/bin:/system/xbin
 
-POLL_S=${WIFIWARN_POLL_S:-15}
+POLL_S=${WIFIWARN_POLL_S:-60}
 # part 1's marker for the opt-in Wi-Fi client (comp/1_projection/scripts/common.sh)
 OPTIN=/data/nemesis/backup/wireless.projection/wifi_client
 MSG="Wi-Fi is on. Wireless CarPlay and Android Auto can drop every minute or two while it is. If that happens, turn Wi-Fi off in the head unit's Wi-Fi settings."
