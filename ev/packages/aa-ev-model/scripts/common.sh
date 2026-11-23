@@ -13,6 +13,7 @@
 #
 # Off switch without uninstall: setprop persist.gpm.ev.off 1 (and replug AA).
 
+# shellcheck disable=SC2034 # the scripts that source this file read its variables
 export PATH=/data/nemesis/bin:/sbin:/vendor/bin:/system/sbin:/system/bin:/system/xbin
 export LD_LIBRARY_PATH=/vendor/lib:/system/lib
 

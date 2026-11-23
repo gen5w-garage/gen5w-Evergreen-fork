@@ -62,6 +62,7 @@ mirror_logs
 # NEMESIS's unpacked copy of this package: the reboot comes before NEMESIS would
 # remove it (see updating)
 rm -rf "$NEMESIS_STAGE"
+# shellcheck disable=SC2093 # the line after runs only if reboot cannot start
 exec /system/bin/reboot
 log "FAIL: reboot returned"
 exit 1

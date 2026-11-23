@@ -15,9 +15,11 @@
 BUILD_DIR=/data/nemesis/build/wireless.carplay.aa
 TBT_BACKUP=/data/nemesis/backup/projection.tbt
 MENU_BACKUP=/data/nemesis/backup/projection.menu
+# shellcheck disable=SC2034 # scripts/lpatch.sh reads it
 LP_ROOT=.
 . ./scripts/lpatch.sh
 
+# shellcheck disable=SC2034 # scripts/cars.sh reads it
 CARS_DIR=patches
 . ./scripts/cars.sh
 . ./scripts/universal.sh
