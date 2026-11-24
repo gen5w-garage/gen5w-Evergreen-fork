@@ -41,3 +41,11 @@ kind=sh
 path=svc/hotspot-firewall.sh
 uid=root
 mode=restart
+
+# only with EVERGREEN-TRACE on the install drive: writes the turn-by-turn trace lines to a file
+[service.3]
+name=tbt-trace
+kind=sh
+path=svc/tbt-trace.sh
+uid=root
+mode=restart

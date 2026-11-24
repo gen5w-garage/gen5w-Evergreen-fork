@@ -132,6 +132,31 @@ log_wifi_client() {
     return 0
 }
 
+# Trace build (opt-in, for diagnosing turn-by-turn): EVERGREEN-TRACE on the install
+# drive sets TRACE_FLAG; then DiPO logs the raw CarPlay route guidance messages
+# (numbers only, e/LeafiaTrace) and svc/tbt-trace.sh writes the Leafia log lines to
+# TRACE_DIR, which the kit copies to its private logs. Installing without the marker
+# turns it off again; so does uninstalling.
+TRACE_FLAG=/data/nemesis/wireless.carplay.aa.trace
+TRACE_DIR=/data/nemesis/logs/evergreen-trace
+
+trace_setup() {
+    local _d
+    for _d in /storage/usb0 /storage/usb1 /storage/usb2 /mnt/media_rw/usb0 /mnt/media_rw/usb1 /mnt/media_rw/usb2; do
+        [ -f "$_d/EVERGREEN-TRACE" ] || continue
+        grep -q 'wireless\.carplay\.aa\.zip' "$_d/NEMESIS.data" 2>/dev/null || continue
+        if : > "$TRACE_FLAG"; then
+            log "EVERGREEN-TRACE on the install drive: turn-by-turn trace on (logs in $TRACE_DIR)"
+        else
+            log "WARN: could not turn the turn-by-turn trace on"
+        fi
+        return 0
+    done
+    [ -f "$TRACE_FLAG" ] && log "turn-by-turn trace off (no EVERGREEN-TRACE on the install drive)"
+    rm -f "$TRACE_FLAG"
+    return 0
+}
+
 toast() {
     am broadcast -a com.hkmc.intent.action.TOAST \
         -e com.hkmc.intent.extra.TOAST_MESSAGE "$1" \
