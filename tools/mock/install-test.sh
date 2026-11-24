@@ -137,6 +137,7 @@ if [ "$MOCK_LEFTOVER_STOPPED" = 1 ]; then
     echo "com.daudio.app.dipo com.tcc.iap2server" > "$R/data/nemesis/wireless.carplay.aa.stopped"
     : > "$X/pm_disabled_com.daudio.app.dipo"; : > "$X/pm_disabled_com.tcc.iap2server"
 fi
+# shellcheck disable=SC2010 # file names the mock made
 stopped_left() { ls "$X" | grep '^pm_disabled_' | sed 's/^pm_disabled_//' | tr '\n' ' '; }
 [ "$MOCK_ADB_TCP" = 1 ] && echo 1 > "$X/prop_persist.service.adb.tcp.enable"
 adb_props() { echo "enable=$(cat "$X/prop_persist.service.adb.tcp.enable" 2>/dev/null) port=$(cat "$X/prop_persist.adb.tcp.port" 2>/dev/null)"; }
@@ -198,6 +199,7 @@ if "$SH" scripts/pre.sh > "$X/pre.log" 2>&1; then
         fi
     fi
     _l=$(stopped_left); [ -z "$_l" ] || if [ "$MOCK_ANDROID_DOWN" = 1 ]; then echo "apps still stopped after uninstall (Android down: started on the next run with Android up): $_l"; else echo "apps left stopped after uninstall: $_l"; ok=0; fi
+    # shellcheck disable=SC2010 # file names the mock made
     _left=$(ls "$R/data/dalvik-cache" | grep '^system@app@' | tr '\n' ' ')
     [ -z "$_left" ] || { echo "dalvik cache left after uninstall: $_left"; ok=0; }
     if diff -q "$X/before.md5" "$X/after.md5" > /dev/null; then
