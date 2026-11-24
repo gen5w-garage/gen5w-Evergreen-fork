@@ -464,17 +464,17 @@ core_path() {
     return 1
 }
 
-# core_state [file]: the Wi-Fi recipe's state
+# core_state: the Wi-Fi recipe's state on the live library
 core_state() {
-    local _p=$1
-    [ -n "$_p" ] || _p=$(core_path) || { echo MISSING; return 0; }
+    local _p
+    _p=$(core_path) || { echo MISSING; return 0; }
     lp_state "$CORE_RECIPE" "$_p"
 }
 
-# core_extra [file]: "<recipe> <PATCHABLE|APPLIED>" for the screen recipe that fits, or "none"
+# core_extra: "<recipe> <PATCHABLE|APPLIED>" for the screen recipe that fits the live library, or "none"
 core_extra() {
-    local _p=$1 _r _st
-    [ -n "$_p" ] || _p=$(core_path) || { echo none; return 0; }
+    local _p _r _st
+    _p=$(core_path) || { echo none; return 0; }
     for _r in $CORE_EXTRA; do
         _st=$(lp_state "$_r" "$_p")
         case "$_st" in PATCHABLE|APPLIED) echo "$_r $_st"; return 0 ;; esac
