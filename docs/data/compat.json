@@ -33,6 +33,7 @@
           "3a8b442c13259943a8726fbc15a00fb9",
           "4b56912c836261cafecad6ae2b1407a6",
           "575ac7eb4e01e0111b444697b9f6a4e8",
+          "596b0e80ad2b807dee899593f1ca17d8",
           "93ecaa97597a79be2a10728e45c72b33",
           "a8ca2abd8235c57a50d580aed8a2de3e",
           "b977e268fbe73cb5637c4413647a7dea",
@@ -87,6 +88,7 @@
           "3a8b442c13259943a8726fbc15a00fb9",
           "4b56912c836261cafecad6ae2b1407a6",
           "575ac7eb4e01e0111b444697b9f6a4e8",
+          "596b0e80ad2b807dee899593f1ca17d8",
           "93ecaa97597a79be2a10728e45c72b33",
           "a8ca2abd8235c57a50d580aed8a2de3e",
           "b977e268fbe73cb5637c4413647a7dea",
@@ -150,6 +152,7 @@
           "3a8b442c13259943a8726fbc15a00fb9",
           "4b56912c836261cafecad6ae2b1407a6",
           "575ac7eb4e01e0111b444697b9f6a4e8",
+          "596b0e80ad2b807dee899593f1ca17d8",
           "93ecaa97597a79be2a10728e45c72b33",
           "a8ca2abd8235c57a50d580aed8a2de3e",
           "b977e268fbe73cb5637c4413647a7dea",
@@ -157,10 +160,11 @@
           "e7c90e78f45f7e6b9c90ddd7a238b566"
         ],
         "/system/app/HKMC_DiPO.apk": [
-          "59f68c0d484c6fb5d3889f382859d8e4",
-          "982a62795fd9ddba8842e41e5f78db5a"
+          "0f4311e23957a3d5fcde55700306db09",
+          "ed9a93187fcc15593ec161655f289ce3"
         ],
         "/system/app/HKMC_GPM.apk": [
+          "458a3009b786d4ca014ff59d37d541c3",
           "eaaf50bb30953b0fcaf59b2cf211d709"
         ],
         "/system/app/HKMC_Navi_ExSL.apk": [
@@ -171,6 +175,7 @@
           "7e90fa7d8a161ade71e11dc15e56c410"
         ],
         "/system/lib/libautoreceiver_infobank.so": [
+          "37cbe6bfe7462444ca1f6d88013383d9",
           "c08410a8d32a615b1aa805cd8a243d52"
         ]
       }
@@ -208,6 +213,7 @@
           "3a8b442c13259943a8726fbc15a00fb9",
           "4b56912c836261cafecad6ae2b1407a6",
           "575ac7eb4e01e0111b444697b9f6a4e8",
+          "596b0e80ad2b807dee899593f1ca17d8",
           "93ecaa97597a79be2a10728e45c72b33",
           "a8ca2abd8235c57a50d580aed8a2de3e",
           "b977e268fbe73cb5637c4413647a7dea",
@@ -215,10 +221,11 @@
           "e7c90e78f45f7e6b9c90ddd7a238b566"
         ],
         "/system/app/HKMC_DiPO.apk": [
-          "59f68c0d484c6fb5d3889f382859d8e4",
-          "982a62795fd9ddba8842e41e5f78db5a"
+          "0f4311e23957a3d5fcde55700306db09",
+          "ed9a93187fcc15593ec161655f289ce3"
         ],
         "/system/app/HKMC_GPM.apk": [
+          "458a3009b786d4ca014ff59d37d541c3",
           "eaaf50bb30953b0fcaf59b2cf211d709"
         ],
         "/system/app/HKMC_Navi_ExSL.apk": [
@@ -229,6 +236,7 @@
           "7e90fa7d8a161ade71e11dc15e56c410"
         ],
         "/system/lib/libautoreceiver_infobank.so": [
+          "37cbe6bfe7462444ca1f6d88013383d9",
           "c08410a8d32a615b1aa805cd8a243d52"
         ]
       }
@@ -269,6 +277,7 @@
           "3a8b442c13259943a8726fbc15a00fb9",
           "4b56912c836261cafecad6ae2b1407a6",
           "575ac7eb4e01e0111b444697b9f6a4e8",
+          "596b0e80ad2b807dee899593f1ca17d8",
           "93ecaa97597a79be2a10728e45c72b33",
           "a8ca2abd8235c57a50d580aed8a2de3e",
           "b977e268fbe73cb5637c4413647a7dea",
@@ -276,8 +285,8 @@
           "e7c90e78f45f7e6b9c90ddd7a238b566"
         ],
         "/system/app/HKMC_DiPO.apk": [
-          "40677612d9fd109eba7016cc92911a6e",
-          "b157967fe400b59632eb6080dd22569d"
+          "275d38e3409ec1352656ad57559189c9",
+          "933ee375d7268b2d562941179d93e7ad"
         ],
         "/system/app/HKMC_GPM.apk": [
           "a6db40d169e62c3b8a07b883e61afe46",
@@ -285,6 +294,66 @@
         ],
         "/system/app/HKMC_Navi_ExSL.apk": [
           "11a58afc6ebd937d69fa174f565e5e34"
+        ],
+        "/system/app/Iap2ServerApp.apk": [
+          "75d7fea4d2009be6aa5c840118f58c94",
+          "7e90fa7d8a161ade71e11dc15e56c410"
+        ],
+        "/system/lib/libautoreceiver_infobank.so": [
+          "37cbe6bfe7462444ca1f6d88013383d9",
+          "c08410a8d32a615b1aa805cd8a243d52"
+        ]
+      }
+    },
+    {
+      "id": "hyundai-ioniq5-ca-260903",
+      "name": "Hyundai Ioniq 5",
+      "region": "Canada",
+      "chip": "TCC803x",
+      "product_prefix": [
+        "NEEV.CAN.0000.V016.010.260903",
+        "NEEV.CAN.S5W_M.V016.010.260903"
+      ],
+      "years": "2022",
+      "firmware": "V016.010.260903",
+      "status": "testing",
+      "verified": [
+        "Stock projection apps and Android Auto library identical to the US 260903 build (NEMESIS report in #20)"
+      ],
+      "notes": "Uses the US 260903 build unchanged: the Canadian 260903 unit has the same stock files. Awaiting the first real-car test.",
+      "stock": {
+        "/system/app/HKMC_GPM.apk": "66ceb9f7b12da2585a1e2e6ebd355177",
+        "/system/app/HKMC_GPM.odex": "4978a2e09ce8473551236abd45a49112",
+        "/system/app/HKMC_DiPO.apk": "34901b8939a691bac873a6cb1e3756e3",
+        "/system/app/HKMC_DiPO.odex": "92ff2fce2914aa3194c94aaf44f208be",
+        "/system/app/Iap2ServerApp.apk": "fde208439f993986a60396e759797a01",
+        "/system/app/Iap2ServerApp.odex": "46f392ece018bb218d180035b28e658b",
+        "/system/app/HKMC_Navi_ExSL.apk": "98ed8950556d945e37de1176cbb01f9e",
+        "/system/app/HKMC_Navi_ExSL.odex": "45d033884fe70b00fc0ac46385dbddf0",
+        "/system/lib/libautoreceiver_infobank.so": "48ee793af8b86052503b8c952b034731"
+      },
+      "built": {
+        "/system/app/HKMC_BtSettings.apk": [
+          "3a8b442c13259943a8726fbc15a00fb9",
+          "4b56912c836261cafecad6ae2b1407a6",
+          "575ac7eb4e01e0111b444697b9f6a4e8",
+          "596b0e80ad2b807dee899593f1ca17d8",
+          "93ecaa97597a79be2a10728e45c72b33",
+          "a8ca2abd8235c57a50d580aed8a2de3e",
+          "b977e268fbe73cb5637c4413647a7dea",
+          "cd98c36db6857ed174757c6010a36494",
+          "e7c90e78f45f7e6b9c90ddd7a238b566"
+        ],
+        "/system/app/HKMC_DiPO.apk": [
+          "0f4311e23957a3d5fcde55700306db09",
+          "ed9a93187fcc15593ec161655f289ce3"
+        ],
+        "/system/app/HKMC_GPM.apk": [
+          "458a3009b786d4ca014ff59d37d541c3",
+          "eaaf50bb30953b0fcaf59b2cf211d709"
+        ],
+        "/system/app/HKMC_Navi_ExSL.apk": [
+          "54e16b7f067c4924aa1422f59ca1b457"
         ],
         "/system/app/Iap2ServerApp.apk": [
           "75d7fea4d2009be6aa5c840118f58c94",
@@ -325,6 +394,7 @@
           "3a8b442c13259943a8726fbc15a00fb9",
           "4b56912c836261cafecad6ae2b1407a6",
           "575ac7eb4e01e0111b444697b9f6a4e8",
+          "596b0e80ad2b807dee899593f1ca17d8",
           "93ecaa97597a79be2a10728e45c72b33",
           "a8ca2abd8235c57a50d580aed8a2de3e",
           "b977e268fbe73cb5637c4413647a7dea",
@@ -380,6 +450,7 @@
           "3a8b442c13259943a8726fbc15a00fb9",
           "4b56912c836261cafecad6ae2b1407a6",
           "575ac7eb4e01e0111b444697b9f6a4e8",
+          "596b0e80ad2b807dee899593f1ca17d8",
           "93ecaa97597a79be2a10728e45c72b33",
           "a8ca2abd8235c57a50d580aed8a2de3e",
           "b977e268fbe73cb5637c4413647a7dea",
@@ -387,8 +458,8 @@
           "e7c90e78f45f7e6b9c90ddd7a238b566"
         ],
         "/system/app/HKMC_DiPO.apk": [
-          "3911c5530259799fee39b61b11129392",
-          "8eca77be91712cbd9c4cdf1603d4153e"
+          "44c6b42717fd0dbdb8aa6c35a6145d11",
+          "922f78eaaaf62d5219e17798e3d6ec23"
         ],
         "/system/app/HKMC_GPM.apk": [
           "5bef43633d18f77223e4c7e0396c04e0"
@@ -435,6 +506,7 @@
           "3a8b442c13259943a8726fbc15a00fb9",
           "4b56912c836261cafecad6ae2b1407a6",
           "575ac7eb4e01e0111b444697b9f6a4e8",
+          "596b0e80ad2b807dee899593f1ca17d8",
           "93ecaa97597a79be2a10728e45c72b33",
           "a8ca2abd8235c57a50d580aed8a2de3e",
           "b977e268fbe73cb5637c4413647a7dea",
@@ -442,8 +514,8 @@
           "e7c90e78f45f7e6b9c90ddd7a238b566"
         ],
         "/system/app/HKMC_DiPO.apk": [
-          "3911c5530259799fee39b61b11129392",
-          "8eca77be91712cbd9c4cdf1603d4153e"
+          "44c6b42717fd0dbdb8aa6c35a6145d11",
+          "922f78eaaaf62d5219e17798e3d6ec23"
         ],
         "/system/app/HKMC_GPM.apk": [
           "5bef43633d18f77223e4c7e0396c04e0"
@@ -489,6 +561,7 @@
           "3a8b442c13259943a8726fbc15a00fb9",
           "4b56912c836261cafecad6ae2b1407a6",
           "575ac7eb4e01e0111b444697b9f6a4e8",
+          "596b0e80ad2b807dee899593f1ca17d8",
           "93ecaa97597a79be2a10728e45c72b33",
           "a8ca2abd8235c57a50d580aed8a2de3e",
           "b977e268fbe73cb5637c4413647a7dea",
@@ -496,8 +569,8 @@
           "e7c90e78f45f7e6b9c90ddd7a238b566"
         ],
         "/system/app/HKMC_DiPO.apk": [
-          "6d7e482c4519daaae0a740819aea9dd7",
-          "e8866c89b267245a0703b68b3384a3e9"
+          "2559f845b6e636e974f0ba6df75cf0e5",
+          "5c8af7150ecdf884ce03a6b0e8ca90fb"
         ],
         "/system/app/HKMC_GPM.apk": [
           "5b51bf692196fdffac8a2bf5d0f5a83c"
@@ -543,6 +616,7 @@
           "3a8b442c13259943a8726fbc15a00fb9",
           "4b56912c836261cafecad6ae2b1407a6",
           "575ac7eb4e01e0111b444697b9f6a4e8",
+          "596b0e80ad2b807dee899593f1ca17d8",
           "93ecaa97597a79be2a10728e45c72b33",
           "a8ca2abd8235c57a50d580aed8a2de3e",
           "b977e268fbe73cb5637c4413647a7dea",
@@ -550,8 +624,8 @@
           "e7c90e78f45f7e6b9c90ddd7a238b566"
         ],
         "/system/app/HKMC_DiPO.apk": [
-          "5129e93570dde840e563cb9037a1c69c",
-          "97ad28843d5f81b8fd85f06b475d5cd4"
+          "772521c4e8a21f0193a90c42bce33222",
+          "cde3d22d640133ecbc4f465912ceb894"
         ],
         "/system/app/HKMC_GPM.apk": [
           "0a82555e51bbe93a006d813e7e03747c"
@@ -597,6 +671,7 @@
           "3a8b442c13259943a8726fbc15a00fb9",
           "4b56912c836261cafecad6ae2b1407a6",
           "575ac7eb4e01e0111b444697b9f6a4e8",
+          "596b0e80ad2b807dee899593f1ca17d8",
           "93ecaa97597a79be2a10728e45c72b33",
           "a8ca2abd8235c57a50d580aed8a2de3e",
           "b977e268fbe73cb5637c4413647a7dea",
@@ -604,8 +679,8 @@
           "e7c90e78f45f7e6b9c90ddd7a238b566"
         ],
         "/system/app/HKMC_DiPO.apk": [
-          "63ba37527594c3ac398c6d78d707d479",
-          "e4a91e835ac8e88280c26f135769fbdd"
+          "49a2dcc890b5bab279459a88c2b93e20",
+          "5307144b820d73fad3182898712f0c4d"
         ],
         "/system/app/HKMC_GPM.apk": [
           "8c3acd57362292a74f207829e0e5b5f3"

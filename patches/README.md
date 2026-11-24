@@ -7,8 +7,8 @@ One folder per car, plus `common/`. The head unit rebuilds the modified projecti
 | `ev6/` | Kia EV6, US (`CVEV.USA.*`) | 260507 |
 | `ev6_ca/` | Kia EV6, Canada (`CVEV.CAN.*`): same code as the US EV6, so its manifest uses the `ev6/` patches on Canada's own APKs | 260206 |
 | `neev/` | Hyundai Ioniq 5, US (`NEEV.USA.*`, `NEEV23.USA.*`) | 260507 |
-| `neev23_260903/` | Hyundai Ioniq 5, US (`NEEV23.USA.*`, `NEEV23SE.USA.*`, and 2022 `NEEV.USA.*` with the same stock files): ported from `neev/` | 260903 |
-| `neev_ca/` | Hyundai Ioniq 5, Canada (`NEEV.CAN.*`): its Android Auto library differs from the US one, so it carries its own library delta | 260206 |
+| `neev23_260903/` | Hyundai Ioniq 5, US (`NEEV23.USA.*`, `NEEV23SE.USA.*`, 2022 `NEEV.USA.*` and Canada `NEEV.CAN.0000.V016.010.260903` and `NEEV.CAN.S5W_M.V016.010.260903`, all with the same stock files): ported from `neev/`. EV build (`HKMC_GPM.ev.lpd`). Own menu fix (`HKMC_BtSettings.menu.2bf93271`) | 260903 |
+| `neev_ca/` | Hyundai Ioniq 5, Canada 260206 (`NEEV.CAN.*`; on 260903 it takes `neev23_260903/`): its Android Auto library differs from the US one, so it carries its own library delta | 260206 |
 | `nq5/` | Kia Sportage and Sportage Hybrid, US (`NQ5.USA.*`, `NQ5HEV.USA.*`; the hybrid's stock files are identical): ported with `tools/port.py` from an owner's kit, with the Ioniq 5 as reference; every class is identical, only the APK/odex wrappers differ | 260507 |
 | `lx2pe/` | Hyundai Palisade, US (`LX2PE.USA.*`, 260903): CarPlay and Android Auto apps ported from the Ioniq 5 US 260507 build with `port.py`; its navigation app is the same code as the Ioniq 5's on 260903, so it takes that build (DiPO `service/q` merged by hand: accessor renames only around our fix). Own menu fix (`HKMC_BtSettings.menu.04adbc53`). |
 | `cvev_kr/` | Kia EV6, Korea (`CVEV.KOR.*`): apps ported from the Ioniq 5 US 260507 with `port.py` (DiPO `service/q` merged by hand). No library line: its Android Auto library (`c4fbccdf`) is a Korean build the turn-by-turn library patch hasn't been ported to, so it stays stock and part 2 leaves it alone (`no-lib`). Own menu fix (`HKMC_BtSettings.menu.22363be5`). | 260902 |

@@ -15,6 +15,7 @@
 # Supported: Kia EV6 (CVEV) and Hyundai Ioniq 5 (NEEV) on 260507 firmware,
 # Kia K5 Hybrid Korea (DL3HEV.KOR) and Hyundai Ioniq 5 Korea (NEEV.KOR) on 260902 firmware.
 # Each part also checks the exact stock checksums before writing anything.
+# shellcheck disable=SC2034 # the scripts that source this file read its variables
 export PATH=/data/nemesis/bin:/sbin:/vendor/bin:/system/sbin:/system/bin:/system/xbin
 LOG=/data/nemesis/wireless.carplay.aa.log
 PARTS="1_projection 2_tbt 3_bridge 4_audio 5_menu"
@@ -128,6 +129,31 @@ log_wifi_client() {
             log "WARNING: the head unit's Wi-Fi client is on (wifi_on=$_v). Wireless CarPlay and Android Auto can drop every minute or two while it is; if they do, turn Wi-Fi off in the head unit's Wi-Fi settings."
             ;;
     esac
+    return 0
+}
+
+# Trace build (opt-in, for diagnosing turn-by-turn): EVERGREEN-TRACE on the install
+# drive sets TRACE_FLAG; then DiPO logs the raw CarPlay route guidance messages
+# (numbers only, e/LeafiaTrace) and svc/tbt-trace.sh writes the Leafia log lines to
+# TRACE_DIR, which the kit copies to its private logs. Installing without the marker
+# turns it off again; so does uninstalling.
+TRACE_FLAG=/data/nemesis/wireless.carplay.aa.trace
+TRACE_DIR=/data/nemesis/logs/evergreen-trace
+
+trace_setup() {
+    local _d
+    for _d in /storage/usb0 /storage/usb1 /storage/usb2 /mnt/media_rw/usb0 /mnt/media_rw/usb1 /mnt/media_rw/usb2; do
+        [ -f "$_d/EVERGREEN-TRACE" ] || continue
+        grep -q 'wireless\.carplay\.aa\.zip' "$_d/NEMESIS.data" 2>/dev/null || continue
+        if : > "$TRACE_FLAG"; then
+            log "EVERGREEN-TRACE on the install drive: turn-by-turn trace on (logs in $TRACE_DIR)"
+        else
+            log "WARN: could not turn the turn-by-turn trace on"
+        fi
+        return 0
+    done
+    [ -f "$TRACE_FLAG" ] && log "turn-by-turn trace off (no EVERGREEN-TRACE on the install drive)"
+    rm -f "$TRACE_FLAG"
     return 0
 }
 
@@ -313,6 +339,7 @@ apps_hold() {
     for _p in $HOLD_PKGS; do
         pm path "$_p" >/dev/null 2>&1 || continue
         # recorded before stopping, so a run that dies right after still starts it again
+        # shellcheck disable=SC2046 # echo joins the file's lines into one
         case " $(echo $(cat "$HOLD_FILE" 2>/dev/null)) " in *" $_p "*) ;; *) echo "$_p" >> "$HOLD_FILE" ;; esac
         if pm disable "$_p" >/dev/null 2>&1; then log "stopped $_p for the file swap"; else log "WARN: could not stop $_p"; fi
     done

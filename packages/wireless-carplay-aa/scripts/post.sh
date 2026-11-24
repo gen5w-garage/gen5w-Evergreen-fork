@@ -44,6 +44,7 @@ clean_build
 echo "$PARTS" > "$PARTS_FILE" || log "WARN: could not record installed parts in $PARTS_FILE"
 adb_net_fix
 log_wifi_client
+trace_setup
 apps_release
 sync
 if [ -n "$EV6_TEST_ROOT" ]; then log "test mode - not rebooting"; exit 0; fi
@@ -62,6 +63,7 @@ mirror_logs
 # NEMESIS's unpacked copy of this package: the reboot comes before NEMESIS would
 # remove it (see updating)
 rm -rf "$NEMESIS_STAGE"
+# shellcheck disable=SC2093 # the line after runs only if reboot cannot start
 exec /system/bin/reboot
 log "FAIL: reboot returned"
 exit 1

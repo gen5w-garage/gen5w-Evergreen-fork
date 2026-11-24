@@ -52,6 +52,7 @@ retire_usb_descriptor
 toast "AA EV model installed. Restarting now: remove the USB drive while it restarts."
 log "done - rebooting"
 sleep 3
+# shellcheck disable=SC2093 # the line after runs only if reboot cannot start
 exec /system/bin/reboot
 log "FAIL: reboot returned - reboot the head unit by hand"
 exit 0
