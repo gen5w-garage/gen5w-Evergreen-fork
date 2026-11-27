@@ -51,6 +51,22 @@ public final class TxTest {
                 && EvCar.HCAN_EV6_MD5.equals("b9ed02d077649b7c2a589d665f33e2e0"),
                 "EV6 automotive / automotive-service SHA-256 and hcan md5");
         pass++;
+        check(Precond.HkmcVehicle.isVerifiedFramework(
+                Precond.HkmcVehicle.FRAMEWORK_EV6_CA_SHA256,
+                Precond.HkmcVehicle.SERVICE_EV6_CA_SHA256), "Kia EV6 Canada 260206 framework verified");
+        pass++;
+        check(!Precond.HkmcVehicle.isVerifiedFramework(
+                Precond.HkmcVehicle.FRAMEWORK_EV6_CA_SHA256,
+                Precond.HkmcVehicle.SERVICE_EV6_SHA256), "EV6 Canada framework with the US service rejected");
+        pass++;
+        check(Precond.HkmcVehicle.FRAMEWORK_EV6_CA_SHA256.equals("347d05034e6b25e38f8d0446a6e9f02f4c8f5b786c09e583a500235613514c18")
+                && Precond.HkmcVehicle.SERVICE_EV6_CA_SHA256.equals("80bc04d04822464cfedb8878592f04eab8b16351be7aef6c70ff1ec9aa14d021")
+                && EvCar.HCAN_EV6_CA_MD5.equals("e3928a78928b75949a639af6b8ee0c0d"),
+                "EV6 Canada automotive / automotive-service SHA-256 and hcan md5 (#48)");
+        pass++;
+        check(EvModelSender.roadCar("CVEV.CAN.0000.V015.011.260206") == 0,
+                "Kia EV6 Canada gets the EV6's road load");
+        pass++;
         check(EvModelSender.roadCar("CVEV.USA.0000.V015.012.260507") == 0
                 && EvModelSender.ROAD_CAR_A_N[0] == 180.0f && EvModelSender.ROAD_CAR_C[0] == 0.40f,
                 "Kia EV6 gets its own road load");

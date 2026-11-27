@@ -173,4 +173,34 @@ accept the EV6's files, and nothing else.
   set the EV code still reads and sends nothing.
 - **Still to do when an EV6 port kit comes in:** deodex its framework here and
   confirm the numbers above; build the EV6's own GPM patch instead of the code line.
+
+## The Kia EV6 Canada 260206 framework (checked by an owner, #48)
+
+Its own framework build, so its three files have their own hashes. An owner
+(plmelancon, issue #48, 2026-11-24) read the numbers straight from the car's odex
+files (dex extracted, `Stub.TRANSACTION_*`, flag and packet-index fields, with
+androguard; a check of numbers and names, not a full deodex and review) and every
+one the EV code uses is the Ioniq 5 US 260903 framework's: `IHEVService` getHEVStatus 3,
+setBattCondEvStation 62, setBattCondRouteDis 65, setBattCondRemainTime 66;
+`IBCMService` 1 and getBattCondIndSta 109, `IBCMListener` onDriveModeChanged 0x11;
+`IDATCService` 6 / 0x29; hscan (in `com.hkmc.ext.hcan`) getCarSpeed 0x0b and
+getXEV_Bms_GDS_SOH 0xd6; every descriptor string; `HEVManager$HEVFlag`, `DATCFlag`
+and `Navigation$BATTERY_INFO_RX` fields (`EvDriveLog`'s flags included); and
+`NavigationCluster.requestBatteryInfoReq()` / `onHandleBatteryInfoResp(int[])`.
+Live evidence: another package's preconditioning (Tilepad, the same HEV 65/66
+calls) runs on that car: `EV_BATTERYCONDITIONING` 2, battery heater on, pack from
+0 °C to 11 °C in 27 minutes. Its GPM code and Android Auto library are the US
+EV6's, so it gets the same EV build (code line in `patches/ev6_ca/manifest`).
+
+The maintainer signed off on that check (2026-11-26): the gates also accept these
+files, and nothing else.
+
+- **Hashes** (`Precond`'s `*_EV6_CA_SHA256` pair and `EvCar.HCAN_EV6_CA_MD5`):
+  `automotive.odex` SHA-256 `347d05034e6b25e38f8d0446a6e9f02f4c8f5b786c09e583a500235613514c18`
+  (md5 `a0de8ed6…`), `automotive-service.odex` SHA-256
+  `80bc04d04822464cfedb8878592f04eab8b16351be7aef6c70ff1ec9aa14d021` (md5 `1da6ac14…`),
+  `com.hkmc.ext.hcan.odex` md5 `e3928a78928b75949a639af6b8ee0c0d`.
+- **On the test list:** the owner also runs Tilepad's manual preconditioning and
+  "keep warm", which send the same commands; Evergreen leaves preconditioning alone
+  when it's already on and Evergreen didn't start it.
 - The car's own *battery conditioning* setting stays the off switch.

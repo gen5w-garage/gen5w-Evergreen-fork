@@ -363,6 +363,13 @@ public final class Precond {
                 "b9e7e02b81e1a8cfcf767c6b8bbb28bcf1d2c411a208fbf6a465e7f0c662774a";
         static final String SERVICE_EV6_SHA256 =
                 "8af745b41aa28f490953d61531215cd94e059f104b31f6236a8f6c7af23b8062";
+        // Kia EV6 Canada 260206: its own framework build, the same commands and
+        // numbers (checked by an owner from its odex files, issue #48, 2026-11-24;
+        // notes/ev-vehicle-commands.md)
+        static final String FRAMEWORK_EV6_CA_SHA256 =
+                "347d05034e6b25e38f8d0446a6e9f02f4c8f5b786c09e583a500235613514c18";
+        static final String SERVICE_EV6_CA_SHA256 =
+                "80bc04d04822464cfedb8878592f04eab8b16351be7aef6c70ff1ec9aa14d021";
 
         private Boolean compatible;  // null = not checked yet
 
@@ -371,7 +378,9 @@ public final class Precond {
                     || (FRAMEWORK_260903_SHA256.equals(fwSha256)
                             && SERVICE_260903_SHA256.equals(svcSha256))
                     || (FRAMEWORK_EV6_SHA256.equals(fwSha256)
-                            && SERVICE_EV6_SHA256.equals(svcSha256));
+                            && SERVICE_EV6_SHA256.equals(svcSha256))
+                    || (FRAMEWORK_EV6_CA_SHA256.equals(fwSha256)
+                            && SERVICE_EV6_CA_SHA256.equals(svcSha256));
         }
 
         @Override
