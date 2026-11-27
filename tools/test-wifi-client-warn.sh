@@ -32,6 +32,7 @@ asked() { [ -f "$T/asked" ] && grep -c asked "$T/asked" || echo 0; }
 run 0 0 0
 ok "client off: no pop-up" '[ "$(toasts)" = 0 ]'
 ok "not opted in: Android asked once a pass" '[ "$(asked)" = 3 ]'
+ok "polls once a minute" 'grep -q "^POLL_S=\${WIFIWARN_POLL_S:-60}$" "$ROOT/packages/wireless-carplay-aa/svc/wifi-client-warn.sh"'
 run down down 0
 ok "Android down: no pop-up and no error" '[ "$(toasts)" = 0 ] && ! grep -qi "not found\|error" "$T/out"'
 run 1 1 1 1

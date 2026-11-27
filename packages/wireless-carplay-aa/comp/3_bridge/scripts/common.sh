@@ -9,6 +9,7 @@
 #                                forces this on already; set so the prop agrees)
 # Uninstall writes the snapshot and the original prop values back.
 
+# shellcheck disable=SC2034 # the scripts that source this file read its variables
 export PATH=/data/nemesis/bin:/sbin:/vendor/bin:/system/sbin:/system/bin:/system/xbin
 export LD_LIBRARY_PATH=/vendor/lib:/system/lib
 

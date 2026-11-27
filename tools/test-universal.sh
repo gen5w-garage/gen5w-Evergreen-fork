@@ -61,6 +61,7 @@ universal_build; echo "rc=$?"
 CARS_DIR=patches
 car_line || echo "no car"
 R
+# shellcheck disable=SC2097,SC2098 # T is set already; the prefix passes it to run.sh
 run_build() { rm -rf "$T/build" "$T/log" "$P/patches/auto"; (cd "$P" && T=$T PRODUCT=$1 LOG=$T/lpatch.log "$SH" run.sh); }
 
 out=$(run_build XQ9.USA.0000.V015.012.260507)

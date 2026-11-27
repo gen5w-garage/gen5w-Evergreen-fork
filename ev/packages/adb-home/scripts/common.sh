@@ -3,6 +3,7 @@
 # stock ADB-over-network switch off so eth0 stays down (the switch gives eth0
 # 192.168.0.123, which clashes with the wireless projection hotspot).
 
+# shellcheck disable=SC2034 # the scripts that source this file read its variables
 export PATH=/data/nemesis/bin:/sbin:/vendor/bin:/system/sbin:/system/bin:/system/xbin
 
 # Home router (gateway) MAC on wlan0. Set this to your router's MAC and rebuild/reinstall.
