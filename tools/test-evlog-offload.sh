@@ -2,6 +2,7 @@
 # Off-car test of the EV log copier (packages/wireless-carplay-aa/svc/evlog-offload.sh):
 # paths rewritten into a sandbox, `am` stubbed to record pop-ups.
 #   tools/test-evlog-offload.sh [shell]   (default sh; CI also runs mksh)
+# shellcheck disable=SC2034 # the checks ok evals read the values kept in variables
 set -e
 SH=${1:-sh}
 ROOT=$(cd "$(dirname "$0")/.." && pwd)

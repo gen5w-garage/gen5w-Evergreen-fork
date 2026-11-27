@@ -15,6 +15,7 @@
 # Supported: Kia EV6 (CVEV) and Hyundai Ioniq 5 (NEEV) on 260507 firmware,
 # Kia K5 Hybrid Korea (DL3HEV.KOR) and Hyundai Ioniq 5 Korea (NEEV.KOR) on 260902 firmware.
 # Each part also checks the exact stock checksums before writing anything.
+# shellcheck disable=SC2034 # the scripts that source this file read its variables
 export PATH=/data/nemesis/bin:/sbin:/vendor/bin:/system/sbin:/system/bin:/system/xbin
 LOG=/data/nemesis/wireless.carplay.aa.log
 PARTS="1_projection 2_tbt 3_bridge 4_audio 5_menu"
@@ -356,6 +357,7 @@ apps_hold() {
     for _p in $HOLD_PKGS; do
         pm path "$_p" >/dev/null 2>&1 || continue
         # recorded before stopping, so a run that dies right after still starts it again
+        # shellcheck disable=SC2046 # echo joins the file's lines into one
         case " $(echo $(cat "$HOLD_FILE" 2>/dev/null)) " in *" $_p "*) ;; *) echo "$_p" >> "$HOLD_FILE" ;; esac
         if pm disable "$_p" >/dev/null 2>&1; then log "stopped $_p for the file swap"; else log "WARN: could not stop $_p"; fi
     done

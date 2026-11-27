@@ -20,8 +20,7 @@
 # Run from the repo root after packages/aa-ev-model/build.sh.
 
 set -u
-cd "$(dirname "$0")/.."
-ROOT=$(pwd)
+cd "$(dirname "$0")/.." || exit 1
 T=/tmp/opencode/pkgtest
 rm -rf "$T"
 mkdir -p "$T"
@@ -284,6 +283,7 @@ cmp "$EV/egmp-NEEV-20261029-001.csv" "$S/storage/usb1/egmp-aa-ev-logs/egmp-NEEV-
 check "log copied to the opted-in drive" $?
 [ ! -e "$S/storage/usb0/egmp-aa-ev-logs" ] && [ "$(ls "$S/storage/usb0")" = NEMESIS.data ]
 check "drive without egmp-aa-ev-logs/ untouched" $?
+# shellcheck disable=SC2010 # file names the test made
 ! ls -a "$S/storage/usb1/egmp-aa-ev-logs" | grep -q '\.tmp$'
 check "no temp file left" $?
 run_offload > "$T/s9.2.log"

@@ -2,6 +2,7 @@
 # projection.tbt — snapshot the live APK and odex, then install the modified APKs
 # rebuilt on the unit from those stock files. Uninstall writes the snapshot back.
 
+# shellcheck disable=SC2034 # the scripts that source this file read its variables
 export PATH=/data/nemesis/bin:/sbin:/vendor/bin:/system/sbin:/system/bin:/system/xbin
 export LD_LIBRARY_PATH=/vendor/lib:/system/lib
 

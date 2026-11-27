@@ -17,6 +17,7 @@ for _f in MD5SUMS lpatch HKMC_GPM.apk.lpd libautoreceiver_infobank.so.lpd; do
         exit 1
     fi
 done
+# shellcheck disable=SC2034 # checks that the manifest lists the APK
 SUM_PAY_APK=$(manifest_sum HKMC_GPM.apk) || { log "FAIL: no manifest entry for HKMC_GPM.apk"; exit 1; }
 SUM_PAY_LIB=$(manifest_sum libautoreceiver_infobank.so) || { log "FAIL: no manifest entry for libautoreceiver_infobank.so"; exit 1; }
 
