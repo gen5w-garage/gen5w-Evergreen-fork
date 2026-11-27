@@ -55,6 +55,7 @@
           "4fc06e6c75fd52aa8134b43c0eeb3945"
         ],
         "/system/lib/libautoreceiver_infobank.so": [
+          "37cbe6bfe7462444ca1f6d88013383d9",
           "c08410a8d32a615b1aa805cd8a243d52"
         ]
       }
@@ -110,6 +111,7 @@
           "4fc06e6c75fd52aa8134b43c0eeb3945"
         ],
         "/system/lib/libautoreceiver_infobank.so": [
+          "37cbe6bfe7462444ca1f6d88013383d9",
           "c08410a8d32a615b1aa805cd8a243d52"
         ]
       }
@@ -164,7 +166,7 @@
           "c8e7f957e64297365dcad4668bdbfe51"
         ],
         "/system/app/HKMC_GPM.apk": [
-          "458a3009b786d4ca014ff59d37d541c3",
+          "09552919a3b6f41cdb66ee52d76cb20f",
           "eaaf50bb30953b0fcaf59b2cf211d709"
         ],
         "/system/app/HKMC_Navi_ExSL.apk": [
@@ -225,7 +227,7 @@
           "c8e7f957e64297365dcad4668bdbfe51"
         ],
         "/system/app/HKMC_GPM.apk": [
-          "458a3009b786d4ca014ff59d37d541c3",
+          "09552919a3b6f41cdb66ee52d76cb20f",
           "eaaf50bb30953b0fcaf59b2cf211d709"
         ],
         "/system/app/HKMC_Navi_ExSL.apk": [
@@ -289,8 +291,8 @@
           "4a0eb1db8fb269cded18cfd0b836d647"
         ],
         "/system/app/HKMC_GPM.apk": [
-          "a6db40d169e62c3b8a07b883e61afe46",
-          "fb86afbe8ad3ee68102c8a3797a0f6d8"
+          "514e68db4b9f98a2a7646355dc83b775",
+          "a6db40d169e62c3b8a07b883e61afe46"
         ],
         "/system/app/HKMC_Navi_ExSL.apk": [
           "11a58afc6ebd937d69fa174f565e5e34"
@@ -349,7 +351,7 @@
           "c8e7f957e64297365dcad4668bdbfe51"
         ],
         "/system/app/HKMC_GPM.apk": [
-          "458a3009b786d4ca014ff59d37d541c3",
+          "09552919a3b6f41cdb66ee52d76cb20f",
           "eaaf50bb30953b0fcaf59b2cf211d709"
         ],
         "/system/app/HKMC_Navi_ExSL.apk": [
